@@ -1,0 +1,16 @@
+import express from 'express'
+import { createUserController, deleteUserController, getUserProfileController, loginUserController, updateUserController } from '../controller/user.controller'
+import { verifyUserToken } from '../middleware/authorizaton'
+
+const router = express.Router()
+
+router.post('/', createUserController)
+router.post('/login', loginUserController)
+router.get('/profile', verifyUserToken, getUserProfileController)
+router.put('/update', verifyUserToken, updateUserController)
+router.put('/delete', verifyUserToken, deleteUserController)
+
+
+
+
+export default router
