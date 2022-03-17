@@ -10,6 +10,17 @@ export enum ErrorCodes {
   CARTS = 7000
 }
 
+export enum ErrorItems {
+  ITEM = 'item',
+  USER = 'user',
+  PRODUCT = 'product',
+  CATEGORY = 'category',
+  ORDER = 'order',
+  MENU = 'menu',
+  CART = 'cart'
+}
+
+
 export class UserDefinedError {
 
   constructor(public code: number, public message: string, public data?: any) {
@@ -35,11 +46,18 @@ export class UserDefinedError {
   static Success(data: any = 'OK') {
     return new UserDefinedError(ErrorCodes.SUCCESS, 'Success', data)
   }
+
+  static NotFound(data: any = null, errorItem: ErrorItems, errorCode: ErrorCodes) {
+    return new UserDefinedError(errorCode, `${errorItem} with these details not found`, data)
+  }
+
+  static AlreadyExists(data: any = null, errorItem: ErrorItems, errorCode: ErrorCodes) {
+    return new UserDefinedError(errorCode, `${errorItem} with these details already exists`, data)
+  }
 }
 
 
-
-export async function commonErrorHandler(err, req, res, next) {
+export async function commonErrorHandler(err, _req, res, _next) {
   console.log(err)
   res.status(500).send(err)
 }

@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import morgan from 'morgan'
 import 'dotenv/config'
 import userRouter from './src/router/user.router'
+import categoryRouter from './src/router/category.router'
 
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use(morgan('tiny'))
 
 app.use('/user', userRouter)
+app.use('/category', categoryRouter)
 
 
 

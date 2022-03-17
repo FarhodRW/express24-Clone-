@@ -1,17 +1,17 @@
 import { success } from "../common/helper"
 import { validateIt } from "../common/validation"
 import { UserDto, UserDtoGroup } from "../db/dto/user.dto"
-import { createUserService, deleteUserService, getUserService, loginUserService, updateUserService } from "../service/user.service"
+import { userService } from "../service/user.service"
 import bcrypt from 'bcrypt'
-import { UserError } from "../db/model/user/user.error"
 import jwt from 'jsonwebtoken'
+import { ErrorCodes, ErrorItems, UserDefinedError } from "../db/common/common.error"
 
 export async function createUserController(req, res, next) {
   try {
     const dto = await validateIt(req.body, UserDto, UserDtoGroup.REGISTER)
     dto.password = await bcrypt.hash(dto.password, 8)
-    const user = await createUserService(dto)
-    success(res, user)
+    const data = await userService.create(dto);
+    success(res, data)
   } catch (error) {
     next(error)
   }
@@ -21,13 +21,12 @@ export async function loginUserController(req, res, next) {
   try {
     const data = await validateIt(req.body, UserDto, UserDtoGroup.LOGIN)
 
-    const user = await loginUserService(data.email)
+    const user = await userService.findByQuery(data.email, ErrorCodes.USERS, ErrorItems.USER)
 
     const compare = await bcrypt.compare(data.password, user.password)
-    if (!compare) throw UserError.NotFound(data.email)
+    if (!compare) throw UserDefinedError.NotFound(data.email, ErrorItems.USER, ErrorCodes.USERS,)
     const token = jwt.sign({ _id: user._id }, process.env.JWTUSERKEY)
-
-    success(res, token)
+    success(res, { user, token })
   } catch (error) {
     next(error)
   }
@@ -38,7 +37,7 @@ export async function getUserProfileController(req, res, next) {
   try {
     const id = req.user._id
     console.log(id)
-    const user = await getUserService(id)
+    const user = await userService.findById(id, '-password')
     success(res, user)
   } catch (error) {
     next(error)
@@ -57,7 +56,7 @@ export async function updateUserController(req, res, next) {
       dto.password = await bcrypt.hash(dto.password, 8)
     console.log(dto.password);
 
-    const user = await updateUserService(id, dto)
+    const user = await userService.updateById(id, dto)
     success(res, user)
   } catch (error) {
     next(error)
@@ -69,7 +68,7 @@ export async function deleteUserController(req, res, next) {
     const id = req.user._id
     console.log(id);
 
-    const user = await deleteUserService(id)
+    const user = await userService.updateById(id, { isDeleted: true })
     success(res, 'success')
   } catch (error) {
     next(error)
