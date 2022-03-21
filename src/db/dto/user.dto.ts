@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { Type } from 'class-transformer';
-import { BaseDtoGroup } from './common.dto';
+import { BaseDto, BaseDtoGroup, BasePagingDto } from './common.dto';
 import { IsBoolean, IsOptional, IsString, Min, MinLength } from 'class-validator';
 
 export class UserDtoGroup extends BaseDtoGroup {
@@ -9,7 +9,7 @@ export class UserDtoGroup extends BaseDtoGroup {
   static REGISTER = 'register'
 }
 
-export class UserDto {
+export class UserDto extends BaseDto {
   @IsOptional({
     groups: [UserDtoGroup.UPDATE]
   })
@@ -62,6 +62,9 @@ export class UserDto {
   image: string;
 }
 
+export class UserGetDto extends BasePagingDto {
+
+}
 
 
 

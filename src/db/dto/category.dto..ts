@@ -1,12 +1,12 @@
 import 'reflect-metadata'
 import { Type } from 'class-transformer';
-import { BaseDtoGroup } from './common.dto';
+import { BaseDto, BaseDtoGroup, BasePagingDto } from './common.dto';
 import { IsBoolean, IsMongoId, IsOptional, IsString, Min, MinLength } from 'class-validator';
 
 export class CategoryDtoGroup extends BaseDtoGroup {
 }
 
-export class CategoryDto {
+export class CategoryDto extends BaseDto {
   @IsOptional({
     groups: [CategoryDtoGroup.UPDATE]
   })
@@ -36,8 +36,25 @@ export class CategoryDto {
     groups: [CategoryDtoGroup.CREATE, CategoryDtoGroup.UPDATE]
   })
   isTop: boolean = false
+  createdBy: any;
 }
 
+export class CategoryGetDto extends BasePagingDto {
+  @IsOptional({
+    groups: [CategoryDtoGroup.GET_PAGING]
+  })
+  @IsBoolean({
+    groups: [CategoryDtoGroup.GET_PAGING]
+  })
+  isTop: boolean;
 
+  @IsOptional({
+    groups: [CategoryDtoGroup.GET_PAGING]
+  })
+  @IsMongoId({
+    groups: [CategoryDtoGroup.GET_PAGING]
+  })
+  parentId?: string;
+}
 
 

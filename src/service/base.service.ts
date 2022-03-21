@@ -13,12 +13,10 @@ import { ErrorCodes, ErrorItems, UserDefinedError } from '../db/common/common.er
 // }
 
 export class CommonService<T>{
-  model: Model<T>;
-  constructor(model: Model<T>) {
-    this.model = model;
-  }
+  constructor(public model: Model<T>) { }
 
   public async create(dto, options?: SaveOptions, project?: { __v: 0 }) {
+
     const data = await this.model.create([dto], options);
     return this.model.findById(data[0]._id, project);
   }
@@ -35,7 +33,6 @@ export class CommonService<T>{
 
   public async findByQuery(query, errorCode?: ErrorCodes, errorItem?: ErrorItems) {
     const data = await this.model.findOne({ query })
-    if (!data) throw UserDefinedError.NotFound(query, errorItem, errorCode,)
     return data
   }
 

@@ -1,6 +1,6 @@
 import express from 'express'
 import { createUserController, deleteUserController, getUserProfileController, loginUserController, updateUserController } from '../controller/user.controller'
-import { verifyUserToken } from '../middleware/authorizaton'
+import { verifyUserToken } from '../middleware/userAuth'
 
 const router = express.Router()
 

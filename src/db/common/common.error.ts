@@ -7,7 +7,8 @@ export enum ErrorCodes {
   CATEGORIES = 4000,
   ORDERS = 5000,
   MENUS = 6000,
-  CARTS = 7000
+  CARTS = 7000,
+  STORES = 8000
 }
 
 export enum ErrorItems {
@@ -17,7 +18,8 @@ export enum ErrorItems {
   CATEGORY = 'category',
   ORDER = 'order',
   MENU = 'menu',
-  CART = 'cart'
+  CART = 'cart',
+  STORE = 'store'
 }
 
 

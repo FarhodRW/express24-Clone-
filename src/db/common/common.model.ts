@@ -5,7 +5,8 @@ export enum CollectionNames {
   ORDERS = 'orders',
   REVIEWS = 'reviews',
   MENUS = 'menus',
-  CARTS = 'carts'
+  CARTS = 'carts',
+  STORES = "stores"
 }
 
 

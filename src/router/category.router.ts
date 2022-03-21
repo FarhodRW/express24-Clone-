@@ -1,12 +1,13 @@
 import express from 'express'
-import { createCategoryController, deleteCategoryController, updateCategoryController } from '../controller/category.controller'
-import { verifyUserToken } from '../middleware/authorizaton'
+import { createCategoryController, deleteCategoryController, getCategoryPagingController, updateCategoryController } from '../controller/category.controller'
+import { verifyAdminToken } from '../middleware/adminAuth'
 
 const router = express.Router()
 
-router.post('/create', createCategoryController)
-router.put('/update/:id', updateCategoryController)
-router.delete('/delete/:id', deleteCategoryController)
+router.post('/create', verifyAdminToken, createCategoryController)
+router.put('/update/:id', verifyAdminToken, updateCategoryController)
+router.delete('/delete/:id', verifyAdminToken, deleteCategoryController)
+router.post('/', getCategoryPagingController)
 
 
 
